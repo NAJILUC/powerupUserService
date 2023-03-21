@@ -30,7 +30,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "201", description = "User created", content = @Content),
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/createOwner")
     public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto) {
         userRequestDto.setRol(2L);
         userHandler.saveUser(userRequestDto);
