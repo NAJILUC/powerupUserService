@@ -36,6 +36,10 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 	implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE"
+	//implementation "io.jsonwebtoken:jjwt:0.11.5"
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+
+
 
 	//implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 //	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
@@ -46,6 +50,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConnectorVersion}"
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	compileOnly "org.projectlombok:lombok:${lombokVersion}"

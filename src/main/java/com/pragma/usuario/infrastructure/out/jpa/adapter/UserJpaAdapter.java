@@ -7,6 +7,8 @@ import com.pragma.usuario.infrastructure.out.jpa.entity.UserEntity;
 import com.pragma.usuario.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.usuario.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     @Override
     public UserModel saveUser(UserModel userModel) {
+        userModel.setClave(BCrypt.hashpw(userModel.getClave(),BCrypt.gensalt()));
         UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(userModel));
         return userEntityMapper.toUserModel(userEntity);
     }

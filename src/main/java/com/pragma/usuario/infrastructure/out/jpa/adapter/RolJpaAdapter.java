@@ -19,6 +19,7 @@ public class RolJpaAdapter implements IRolPersistencePort {
 
 
 
+
     @Override
     public RolModel saveRol(RolModel rolModel) {
         RolEntity rolEntity = rolRepository.save(rolEntityMapper.toEntity(rolModel));

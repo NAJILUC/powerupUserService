@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,8 +33,17 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping("/createOwner")
-    public ResponseEntity<Void> saveUser(@Valid @RequestBody UserRequestDto userRequestDto) {
+    @PreAuthorize("hasAuthority('Administrador')")
+    public ResponseEntity<Void> saveUserOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
         userRequestDto.setRol(2L);
+        userHandler.saveUser(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/createEmployed")
+    @PreAuthorize("hasAuthority('Propietario')")
+    public ResponseEntity<Void> saveUserEmployed(@Valid @RequestBody UserRequestDto userRequestDto) {
+        userRequestDto.setRol(3L);
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -45,6 +56,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
+   // @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok(userHandler.getAllUsers());
     }

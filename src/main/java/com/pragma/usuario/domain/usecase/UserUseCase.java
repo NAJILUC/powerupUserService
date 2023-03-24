@@ -19,7 +19,7 @@ public class UserUseCase implements IUserServicePort {
 
 
     @Override
-    public void saveUser(UserModel userModel) {
+    public void saveUser(UserModel userModel) {/*
     if(userModel.getNombre().isEmpty())throw new DomainException("El nombre es obligatorio");
     if(userModel.getApellido().isEmpty())throw new DomainException("El apellido es obligatorio");
     if(userModel.getDocumento().toString().isEmpty()||userModel.getDocumento().toString().length()<1)
@@ -29,7 +29,7 @@ public class UserUseCase implements IUserServicePort {
     if(!userModel.getCorreo().contains("@")||userModel.getCorreo().isEmpty())
         throw new DomainException("Ingrese un correo valido");
     if(userModel.getClave().isEmpty())throw new DomainException("La clave es obligatoria");
-        userModel.setClave(BCrypt.hashpw(userModel.getClave(),BCrypt.gensalt()));
+        userModel.setClave(BCrypt.hashpw(userModel.getClave(),BCrypt.gensalt()));*/
     userPersistencePort.saveUser(userModel);
     }
 
