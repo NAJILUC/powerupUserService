@@ -18,4 +18,6 @@ public interface IUserHandler {
 
     Boolean userOwnerExist(Long id);
 
+    UserResponseDto getUserByEmail(String correo);
+
 }

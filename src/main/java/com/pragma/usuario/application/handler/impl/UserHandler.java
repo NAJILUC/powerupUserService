@@ -8,6 +8,7 @@ import com.pragma.usuario.application.mapper.IUserRequestMapper;
 import com.pragma.usuario.application.mapper.IUserResponseMapper;
 import com.pragma.usuario.domain.api.IUserServicePort;
 import com.pragma.usuario.domain.model.UserModel;
+import com.pragma.usuario.domain.spi.token.IToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class UserHandler implements IUserHandler {
     private final IUserServicePort userServicePort;
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
+    private final IToken iToken;
 
 
 
@@ -50,5 +52,10 @@ public class UserHandler implements IUserHandler {
     @Override
     public Boolean userOwnerExist(Long id) {
         return userServicePort.userOwnerExist(id);
+    }
+
+    @Override
+    public UserResponseDto getUserByEmail(String correo) {
+        return userResponseMapper.toResponseUser(userServicePort.getUserByEmail(correo));
     }
 }

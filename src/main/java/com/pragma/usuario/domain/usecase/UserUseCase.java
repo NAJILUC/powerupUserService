@@ -1,20 +1,25 @@
 package com.pragma.usuario.domain.usecase;
 
+import com.pragma.usuario.application.dto.response.UserResponseDto;
 import com.pragma.usuario.domain.api.IUserServicePort;
 import com.pragma.usuario.domain.exception.DomainException;
 import com.pragma.usuario.domain.model.RolModel;
 import com.pragma.usuario.domain.model.UserModel;
 import com.pragma.usuario.domain.spi.IUserPersistencePort;
+import com.pragma.usuario.domain.spi.token.IToken;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
 public class UserUseCase implements IUserServicePort {
 
     private final IUserPersistencePort userPersistencePort;
+    private final IToken iToken;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort) {
+    public UserUseCase(IUserPersistencePort userPersistencePort, IToken iToken) {
         this.userPersistencePort = userPersistencePort;
+        this.iToken = iToken;
     }
 
 
@@ -30,7 +35,24 @@ public class UserUseCase implements IUserServicePort {
         throw new DomainException("Ingrese un correo valido");
     if(userModel.getClave().isEmpty())throw new DomainException("La clave es obligatoria");
         userModel.setClave(BCrypt.hashpw(userModel.getClave(),BCrypt.gensalt()));*/
-    userPersistencePort.saveUser(userModel);
+
+
+        if(iToken.getBearerToken()==null){
+            userModel.setRol(new RolModel(4L, "Cliente","Rol del Cliente"));
+            userPersistencePort.saveUser(userModel);
+            return;
+        }
+
+        UserModel user = getUserById(iToken.getUserAuthenticatedId(iToken.getBearerToken()));
+        System.out.println(userModel.getRol().getId());
+
+        System.out.println(user.getId());
+
+        userModel.getRol().setId(user.getRol().getId()+1);
+
+        System.out.println(userModel.getRol().getId());
+
+        userPersistencePort.saveUser(userModel);
     }
 
     @Override
@@ -54,7 +76,7 @@ public class UserUseCase implements IUserServicePort {
         //System.out.println(id);
         List<UserModel> users = getAllUsers();
         for (UserModel user:users) {
-            if(user.getId()==id && user.getRol().getId()==2) return user;
+            if(user.getId()==id) return user;
         }
      //   System.out.println("Nofunc");
         return new UserModel(0L,"","",0L,"","","",new RolModel(0L,"",""));
@@ -71,5 +93,14 @@ public class UserUseCase implements IUserServicePort {
         }
        // System.out.println("No");
         return false;
+    }
+
+    @Override
+    public UserModel getUserByEmail(String correo) {
+        List<UserModel> users = getAllUsers();
+        for (UserModel user:users) {
+            if(user.getCorreo().equals(correo)) return user;
+        }
+        return new UserModel(0L,"","",0L,"","","",new RolModel(0L,"",""));
     }
 }

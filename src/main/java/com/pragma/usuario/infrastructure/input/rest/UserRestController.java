@@ -33,17 +33,16 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping("/createOwner")
-    @PreAuthorize("hasAuthority('Administrador')")
+   // @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Void> saveUserOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
         userRequestDto.setRol(2L);
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/createEmployed")
-    @PreAuthorize("hasAuthority('Propietario')")
+    @PostMapping("/createUser")
+    //@PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<Void> saveUserEmployed(@Valid @RequestBody UserRequestDto userRequestDto) {
-        userRequestDto.setRol(3L);
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -56,7 +55,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-   // @PreAuthorize("hasAuthority('Administrador')")
+    @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok(userHandler.getAllUsers());
     }
@@ -69,13 +68,22 @@ public class UserRestController {
 
     @PostMapping("/getUser/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id) {
-       // public ResponseEntity<UserResponseDto> getUserById(@Valid @RequestBody UserRequestDtoD userRequestDto) {
+        // public ResponseEntity<UserResponseDto> getUserById(@Valid @RequestBody UserRequestDtoD userRequestDto) {
         UserResponseDto user = userHandler.getUserById(id);
-       // if(user.getId()==0)return ResponseEntity.notFound().build();
+        // if(user.getId()==0)return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userHandler.getUserById(id));
     }
 
+    @PostMapping("/getUserEmail/{correo}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("correo") String correo) {
+        // public ResponseEntity<UserResponseDto> getUserById(@Valid @RequestBody UserRequestDtoD userRequestDto) {
+//        UserResponseDto user = userHandler.getUserById(id);
+        // if(user.getId()==0)return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userHandler.getUserByEmail(correo));
+    }
+
     @PostMapping("/userOwnerExist/{id}")
+   // @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<Boolean> userExist(@PathVariable("id") Long id){
         return ResponseEntity.ok(userHandler.userOwnerExist(id));
     }

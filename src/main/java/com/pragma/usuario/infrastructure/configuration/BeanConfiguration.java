@@ -4,6 +4,7 @@ import com.pragma.usuario.domain.api.IRolServicePort;
 import com.pragma.usuario.domain.api.IUserServicePort;
 import com.pragma.usuario.domain.spi.IRolPersistencePort;
 import com.pragma.usuario.domain.spi.IUserPersistencePort;
+import com.pragma.usuario.domain.spi.token.IToken;
 import com.pragma.usuario.domain.usecase.RolUseCase;
 import com.pragma.usuario.domain.usecase.UserUseCase;
 import com.pragma.usuario.infrastructure.out.jpa.adapter.RolJpaAdapter;
@@ -12,6 +13,7 @@ import com.pragma.usuario.infrastructure.out.jpa.mapper.IRolEntityMapper;
 import com.pragma.usuario.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.usuario.infrastructure.out.jpa.repository.IRolRepository;
 import com.pragma.usuario.infrastructure.out.jpa.repository.IUserRepository;
+import com.pragma.usuario.infrastructure.out.jpa.token.TokenAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +33,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort());
+        return new UserUseCase(userPersistencePort(),token());
     }
 
     @Bean
@@ -42,5 +44,9 @@ public class BeanConfiguration {
     @Bean
     public IRolServicePort rolServicePort() {
         return new RolUseCase(rolPersistencePort());
+    }
+
+    @Bean
+    public IToken token(){return new TokenAdapter();
     }
 }

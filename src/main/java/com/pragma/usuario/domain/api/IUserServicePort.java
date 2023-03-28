@@ -15,4 +15,6 @@ public interface IUserServicePort {
     UserModel getUserById(Long id);
 
     Boolean userOwnerExist(Long id);
+
+    UserModel getUserByEmail(String correo);
 }
