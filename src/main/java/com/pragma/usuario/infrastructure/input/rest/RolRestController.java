@@ -24,7 +24,7 @@ public class RolRestController {
 
     private final IRolHandler rolHandler;
 
-    @Operation(summary = "Add a new user")
+    @Operation(summary = "Add a new rol")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created", content = @Content),
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
@@ -35,7 +35,7 @@ public class RolRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all users")
+    @Operation(summary = "Get all roles")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All users returned",
                     content = @Content(mediaType = "application/json",
@@ -47,6 +47,8 @@ public class RolRestController {
         return ResponseEntity.ok(rolHandler.getAllRoles());
     }
 
+
+    @Operation(summary = "Get rol by id")
     @GetMapping("/{id}")
     public ResponseEntity<RolResponseDto> getRolById(@PathVariable Long id){
         return ResponseEntity.ok(rolHandler.getRolById(id));

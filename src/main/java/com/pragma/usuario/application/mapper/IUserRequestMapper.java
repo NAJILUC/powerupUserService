@@ -13,7 +13,6 @@ import org.mapstruct.ReportingPolicy;
 public interface IUserRequestMapper {
 
     @Mapping(target = "rol.id", source = "rol")
-    //@Mapping(target = "rol.descripcionRol", source = "objectRequestDto.descripcionRol")
     UserModel toUser(UserRequestDto userRequestDto);
 
 

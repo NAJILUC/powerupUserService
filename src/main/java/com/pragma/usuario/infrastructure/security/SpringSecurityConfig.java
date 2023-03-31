@@ -32,7 +32,8 @@ public class SpringSecurityConfig {
 
         return httpSecurity
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/api/v1/user/createUser", "/api/v1/user/userOwnerExist/**").permitAll()
+                .authorizeRequests().antMatchers("/api/v1/user/createUser", "/api/v1/user/userOwnerExist/**"
+                        ,"/swagger-ui/**", "/swagger-resources/**","/v3/api-docs/**", "/v2/api-docs/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

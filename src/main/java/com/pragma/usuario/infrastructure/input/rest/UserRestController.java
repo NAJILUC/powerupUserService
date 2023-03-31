@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,15 +32,14 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping("/createOwner")
-   // @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Void> saveUserOwner(@Valid @RequestBody UserRequestDto userRequestDto) {
         userRequestDto.setRol(2L);
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Add a new user")
     @PostMapping("/createUser")
-    //@PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<Void> saveUserEmployed(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -60,41 +58,30 @@ public class UserRestController {
         return ResponseEntity.ok(userHandler.getAllUsers());
     }
 
+    @Operation(summary = "Delete a user")
     @PostMapping("/delete")
     public ResponseEntity<Void> deleteuser(@Valid @RequestBody UserRequestDtoD userRequestDto) {
         userHandler.deleteUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @Operation(summary = "Get a user")
     @PostMapping("/getUser/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable("id") Long id) {
-        // public ResponseEntity<UserResponseDto> getUserById(@Valid @RequestBody UserRequestDtoD userRequestDto) {
         UserResponseDto user = userHandler.getUserById(id);
-        // if(user.getId()==0)return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userHandler.getUserById(id));
     }
 
+    @Operation(summary = "Get a  user by email")
     @PostMapping("/getUserEmail/{correo}")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable("correo") String correo) {
-        // public ResponseEntity<UserResponseDto> getUserById(@Valid @RequestBody UserRequestDtoD userRequestDto) {
-//        UserResponseDto user = userHandler.getUserById(id);
-        // if(user.getId()==0)return ResponseEntity.notFound().build();
         return ResponseEntity.ok(userHandler.getUserByEmail(correo));
     }
 
+    @Operation(summary = "User Owner exist")
     @PostMapping("/userOwnerExist/{id}")
-   // @PreAuthorize("hasAuthority('Propietario')")
     public ResponseEntity<Boolean> userExist(@PathVariable("id") Long id){
         return ResponseEntity.ok(userHandler.userOwnerExist(id));
     }
-
-
-/*
-    @PostMapping("/guardarRestaurante/{idPropietario}")
-    public ResponseEntity<RestauranteModel> guardarRestaurante(@PathVariable("idPropietario")Long idPropietario,
-                                                               @RequestBody RestauranteModel restauranteModel){
-        RestauranteModel newRestaurante = userHandler.saveRestaurant(idPropietario,restauranteModel);
-        return ResponseEntity.ok(restauranteModel);
-    }*/
 
 }

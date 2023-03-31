@@ -48,7 +48,6 @@ public class TokenUtils {
 
             String correo = claims.getSubject();
 
-        //    System.out.println(claims.get("rol"));
             Collection<SimpleGrantedAuthority> authorities =
                     Arrays.stream(claims.get("rol").toString().split(","))
                             .map(SimpleGrantedAuthority::new)
