@@ -1,14 +1,10 @@
 package com.pragma.usuario.domain.usecase;
 
-import com.pragma.usuario.application.dto.response.UserResponseDto;
 import com.pragma.usuario.domain.api.IUserServicePort;
-import com.pragma.usuario.domain.exception.DomainException;
 import com.pragma.usuario.domain.model.RolModel;
 import com.pragma.usuario.domain.model.UserModel;
 import com.pragma.usuario.domain.spi.IUserPersistencePort;
 import com.pragma.usuario.domain.spi.token.IToken;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
@@ -16,10 +12,12 @@ public class UserUseCase implements IUserServicePort {
 
     private final IUserPersistencePort userPersistencePort;
     private final IToken iToken;
+   // private final IUserFeignClientPort userFeignClientPort;
 
     public UserUseCase(IUserPersistencePort userPersistencePort, IToken iToken) {
         this.userPersistencePort = userPersistencePort;
         this.iToken = iToken;
+      //  this.userFeignClientPort = userFeignClientPort;
     }
 
 
@@ -44,15 +42,20 @@ public class UserUseCase implements IUserServicePort {
         }
 
         UserModel user = getUserById(iToken.getUserAuthenticatedId(iToken.getBearerToken()));
-        System.out.println(userModel.getRol().getId());
+        //System.out.println(userModel.getRol().getId());
 
-        System.out.println(user.getId());
+        //System.out.println(user.getId());
 
+        System.out.println(userModel.getRol().getId()+"ANTES");
         userModel.getRol().setId(user.getRol().getId()+1);
 
         System.out.println(userModel.getRol().getId());
+        //System.out.println(userModel.getRol().getId());
+
+        //if(user.getRol().getNombreRol().equals("Propietario")) userFeignClientPort.saveRestaurante_Empleado(user.getId(), userModel.getId());
 
         userPersistencePort.saveUser(userModel);
+
     }
 
     @Override

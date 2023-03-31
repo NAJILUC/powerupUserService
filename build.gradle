@@ -26,8 +26,7 @@ ext {
 	lombokMapstructBindingVersion = "0.2.0"
 	mySqlConnectorVersion = "8.0.32"
 	openApiVersion = "1.6.11"
-	//set('springCloudVersion', "2021.0.5")
-	//ext['spring-security.version']='5.1.5.RELEASE'
+	set('springCloudVersion', "2021.0.5")
 }
 
 dependencies {
@@ -36,18 +35,12 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 	implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE"
-	//implementation "io.jsonwebtoken:jjwt:0.11.5"
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-
-
-
-	//implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.2.9.RELEASE'
-	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
 	testImplementation 'org.mockito:mockito-core:5.0.0'
+	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConnectorVersion}"
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -64,12 +57,11 @@ dependencies {
 	implementation 'org.mindrot:jbcrypt:0.4'
 
 }
-/*
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
-}*/
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
